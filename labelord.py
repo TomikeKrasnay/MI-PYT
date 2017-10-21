@@ -64,6 +64,14 @@ def print_repos(session):
     exit(0)
 
 
+def get_name_repos(session):
+    json_data = get_all_repos(session)
+    result_array = []
+    for one_repo in json_data:
+        result_array.append(one_repo["full_name"])
+    return result_array
+
+
 def print_labels(session, name_repo):
     json_data = get_all_labels(session, name_repo)
     for one_repo in json_data:
@@ -408,6 +416,7 @@ def run(ctx, mode, **configuration):
 # STARING NEW FLASK SKELETON (Task 2 - flask)
 
 class LabelordWeb(flask.Flask):
+    inject_session = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -420,12 +429,13 @@ class LabelordWeb(flask.Flask):
         # @see https://github.com/pallets/flask
 
     def inject_session(self, session):
-        # TODO: inject session for communication with GitHub
-        # The tests will call this method to pass the testing session.
-        # Always use session from this call (it will be called before
-        # any HTTP request). If this method is not called, create new
-        # session.
-        ...
+        self.inject_session = session
+        # # TODO: inject session for communication with GitHub
+        # # The tests will call this method to pass the testing session.
+        # # Always use session from this call (it will be called before
+        # # any HTTP request). If this method is not called, create new
+        # # session.
+        # ...
 
     def reload_config(self):
         # TODO: check envvar LABELORD_CONFIG and reload the config
@@ -442,13 +452,24 @@ class LabelordWeb(flask.Flask):
 app = flask.Flask(__name__)
 
 
-# @app.route('/')
-# def hello():
-#     return 'MI-PYT je nejlepší předmět na FITu!'
-
 @app.route('/', methods=['POST'])
 def hook():
     return 'OK'
+
+
+@app.route('/', methods=['GET'])
+def hook_get():
+    session = get_session()
+    array = get_name_repos(session)
+    html_result = ""
+    for name in array:
+        html_result = html_result + " " + name + "\n"
+
+    return str(html_result)
+
+
+def get_session():
+    return app.inject_session
 
 # TODO: implement web app
 # hint: you can use flask.current_app (inside app context)
@@ -456,17 +477,20 @@ def hook():
 
 @cli.command()
 @click.option('-h', '--host', default='127.0.0.1',
-              help='Specification of hostname.')
+              help='The interface to bind to.')
 @click.option('-p', '--port', default='5000',
-              help='Specification of port.')
+              help='The port to bind to.', type=int)
 @click.option('-d', '--debug', is_flag=True,
-              help='Debug mode flag.')
+              help='Turns on DEBUG mode.')
 @click.pass_context
 def run_server(ctx, **configuration):
-
+    """Run master-to-master replication server."""
     debug = configuration['debug']
     port = configuration['port']
     hostname = configuration['host']
+    prepare_session(ctx)
+    session = ctx.obj['session']
+    app.inject_session = session
     app.run(debug=debug, host=hostname, port=int(port))
 
 
