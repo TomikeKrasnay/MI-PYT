@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5e4d7a7-8a1e-4a2b-8378-13f068978e27" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord.py" afterPath="$PROJECT_DIR$/labelord.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="labelord.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="labelord.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/labelord.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="708">
@@ -22,6 +22,16 @@
               <folding>
                 <element signature="e#137#149#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="492">
+              <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -84,8 +94,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/labelord.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -186,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508595624883</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="post method update">
+      <created>1508597254420</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1508597254420</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -224,7 +241,8 @@
     <MESSAGE value="added functions for run_server" />
     <MESSAGE value="added test method" />
     <MESSAGE value="added POST method" />
-    <option name="LAST_COMMIT_MESSAGE" value="added POST method" />
+    <MESSAGE value="post method update" />
+    <option name="LAST_COMMIT_MESSAGE" value="post method update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -281,14 +299,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="618">
-          <caret line="85" column="5" lean-forward="false" selection-start-line="85" selection-start-column="5" selection-end-line="85" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests_web/test_basic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -320,6 +330,14 @@
           <folding>
             <element signature="e#137#149#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
