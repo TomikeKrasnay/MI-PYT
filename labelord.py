@@ -448,7 +448,7 @@ app = flask.Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def hook():
-    return ''
+    return 'OK'
 
 # TODO: implement web app
 # hint: you can use flask.current_app (inside app context)
