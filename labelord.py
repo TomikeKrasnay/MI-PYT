@@ -442,6 +442,12 @@ class LabelordWeb(flask.Flask):
 app = flask.Flask(__name__)
 
 
+@app.route('/')
+def hello():
+    return 'MI-PYT je nejlepší předmět na FITu!'
+
+
+
 # TODO: implement web app
 # hint: you can use flask.current_app (inside app context)
 
