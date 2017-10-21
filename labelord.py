@@ -5,6 +5,7 @@
 import click
 import flask
 import os
+import sys
 import requests
 import configparser
 import json
@@ -285,6 +286,28 @@ def setup_config(config, is_web):
     return config_file
 
 
+def setup_config_web(config):
+    config_file = configparser.ConfigParser()
+    config_file.optionxform = str
+
+    if not config_file.read(config):
+        exit(3)
+
+    if 'repos' not in config_file:
+        click.echo('No repositories specification has been found', err=True)
+        sys.exit(7)
+
+    if 'webhook_secret' not in config_file['github']:
+        click.echo('No webhook secret has been provided', err=True)
+        sys.exit(8)
+
+    if 'token' not in config_file['github']:
+        click.echo('No GitHub token has been provided', err=True)
+        sys.exit(3)
+
+    return config_file
+
+
 def run_response(configuration, len_repos, all_errors):
     is_quiet = configuration['quiet']
     is_verbose = configuration['verbose']
@@ -332,6 +355,18 @@ def remove_labels_from_all_repos(session, configuration, repos):
         parsed_labels = parse_labels(all_repo_labels)
         for key in parsed_labels:
             delete_label(session, repo_name, key, "", configuration)
+
+
+def create_table_html_repos(config, session):
+    config_file = setup_config_web(config)
+    repos = get_repos(config_file, False, session)
+    html_result = "master-to-master labelord GitHub webhook " + "<table>"
+    for name in repos:
+        url = "https://github.com/" + name
+        html_result = html_result + "<tr>" + "<th>" + url + "</th>" + "</tr>"
+
+    html_result = html_result + "</table>"
+    return html_result
 
 # PUBLIC FUNCTIONS
 
@@ -417,9 +452,10 @@ def run(ctx, mode, **configuration):
 # STARING NEW FLASK SKELETON (Task 2 - flask)
 
 class LabelordWeb(flask.Flask):
-    inject_session = None
+    local_session = None
     ctx = None
     configuration = None
+    config_file = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -432,7 +468,7 @@ class LabelordWeb(flask.Flask):
         # @see https://github.com/pallets/flask
 
     def inject_session(self, session):
-        self.inject_session = session
+        self.local_session = session
         # # TODO: inject session for communication with GitHub
         # # The tests will call this method to pass the testing session.
         # # Always use session from this call (it will be called before
@@ -441,12 +477,9 @@ class LabelordWeb(flask.Flask):
         # ...
 
     def reload_config(self):
-        # TODO: check envvar LABELORD_CONFIG and reload the config
-        # Because there are problems with reimporting the app with
-        # different configuration, this method will be called in
-        # order to reload configuration file. Check if everything
-        # is correctly set-up
-        ...
+        if 'LABELORD_CONFIG' in os.environ:
+            self.config_file = os.environ['LABELORD_CONFIG']
+            config = setup_config_web(self.config_file)
 
 
 # TODO: instantiate LabelordWeb app
@@ -457,21 +490,20 @@ app = LabelordWeb(__name__)
 
 @app.route('/', methods=['POST'])
 def post():
-    return 'OK'
+    return 'OK post'
 
 
 @app.route('/', methods=['GET'])
 def get():
-    session = app.inject_session
-    config = app.ctx.obj['config_file']
-    config_file = setup_config(config, True)
-    repos = get_repos(config_file, False, session)
-    html_result = "master-to-master" + "<table>"
-    for name in repos:
-        html_result = html_result + "<tr>" + "<th>" + name + "</th>" + "</tr>"
+    session = app.local_session
+    if app.ctx:
+        config = app.ctx.obj['config_file']
+        return create_table_html_repos(config, session)
+    else:
+        if app.config_file:
+            return create_table_html_repos(app.config_file, session)
 
-    html_result = html_result + "</table>"
-    return html_result
+    return "OK get"
 
 
 # TODO: implement web app
@@ -493,7 +525,7 @@ def run_server(ctx, **configuration):
     hostname = configuration['host']
     prepare_session(ctx)
     session = ctx.obj['session']
-    app.inject_session = session
+    app.local_session = session
     app.ctx = ctx
     app.run(debug=debug, host=hostname, port=int(port))
 
