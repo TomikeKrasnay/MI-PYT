@@ -260,7 +260,7 @@ def prepare_session(ctx):
     return ctx
 
 
-def setup_config(config):
+def setup_config(config, is_web):
     config_file = configparser.ConfigParser()
     config_file.optionxform = str
 
@@ -272,14 +272,15 @@ def setup_config(config):
         click.echo("No repositories specification has been found")
         exit(7)
 
-    if not config_file['repos']:
-        click.echo("SUMMARY: 0 repo(s) updated successfully")
-        exit(0)
+    if not is_web:
+        if not config_file['repos']:
+            click.echo("SUMMARY: 0 repo(s) updated successfully")
+            exit(0)
 
-    if 'labels' not in config_file:
-        # if not is_quiet:
-        click.echo("No labels specification has been found")
-        exit(6)
+        if 'labels' not in config_file:
+            # if not is_quiet:
+            click.echo("No labels specification has been found")
+            exit(6)
 
     return config_file
 
@@ -312,7 +313,7 @@ def get_repos(config_file, configuration, session):
         if config_file['repos'].getboolean(key):
             repos.append(key)
 
-    if configuration['all_repos']:
+    if configuration:
         repos = get_all_repos(session)
         repos = parse_repos(repos)
 
@@ -381,8 +382,8 @@ def run(ctx, mode, **configuration):
     prepare_session(ctx)
     session = ctx.obj['session']
     config = ctx.obj['config_file']
-    config_file = setup_config(config)
-    repos = get_repos(config_file, configuration, session)
+    config_file = setup_config(config, False)
+    repos = get_repos(config_file, ('all_repos' in configuration), session)
     all_errors = 0
     new_labels = config_file['labels']
     # check if exist template repo
@@ -417,6 +418,8 @@ def run(ctx, mode, **configuration):
 
 class LabelordWeb(flask.Flask):
     inject_session = None
+    ctx = None
+    configuration = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -449,27 +452,27 @@ class LabelordWeb(flask.Flask):
 # TODO: instantiate LabelordWeb app
 # Be careful with configs, this is module-wide variable,
 # you want to be able to run CLI app as it was in task 1.
-app = flask.Flask(__name__)
+app = LabelordWeb(__name__)
 
 
 @app.route('/', methods=['POST'])
-def hook():
+def post():
     return 'OK'
 
 
 @app.route('/', methods=['GET'])
-def hook_get():
-    session = get_session()
-    array = get_name_repos(session)
-    html_result = ""
-    for name in array:
-        html_result = html_result + " " + name + "\n"
+def get():
+    session = app.inject_session
+    config = app.ctx.obj['config_file']
+    config_file = setup_config(config, True)
+    repos = get_repos(config_file, False, session)
+    html_result = "master-to-master" + "<table>"
+    for name in repos:
+        html_result = html_result + "<tr>" + "<th>" + name + "</th>" + "</tr>"
 
-    return str(html_result)
+    html_result = html_result + "</table>"
+    return html_result
 
-
-def get_session():
-    return app.inject_session
 
 # TODO: implement web app
 # hint: you can use flask.current_app (inside app context)
@@ -491,6 +494,7 @@ def run_server(ctx, **configuration):
     prepare_session(ctx)
     session = ctx.obj['session']
     app.inject_session = session
+    app.ctx = ctx
     app.run(debug=debug, host=hostname, port=int(port))
 
 
