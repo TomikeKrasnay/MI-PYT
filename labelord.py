@@ -329,7 +329,7 @@ def remove_labels_from_all_repos(session, configuration, repos):
 
 @click.group('labelord')
 @click.pass_context
-@click.option('-c', "--config", default="./config.cfg",
+@click.option('-c', "--config", default="./config.cfg", envvar='LABELORD_CONFIG',
               help="Path of the auth config file.")
 @click.option('-t', "--token", envvar='GITHUB_TOKEN',
               help="GitHub API token.")
@@ -407,7 +407,6 @@ def run(ctx, mode, **configuration):
 #####################################################################
 # STARING NEW FLASK SKELETON (Task 2 - flask)
 
-
 class LabelordWeb(flask.Flask):
 
     def __init__(self, *args, **kwargs):
@@ -440,18 +439,27 @@ class LabelordWeb(flask.Flask):
 # TODO: instantiate LabelordWeb app
 # Be careful with configs, this is module-wide variable,
 # you want to be able to run CLI app as it was in task 1.
-app = ...
+app = flask.Flask(__name__)
+
 
 # TODO: implement web app
 # hint: you can use flask.current_app (inside app context)
 
 
 @cli.command()
+@click.option('-h', '--host', default='127.0.0.1',
+              help='Specification of hostname.')
+@click.option('-p', '--port', default='5000',
+              help='Specification of port.')
+@click.option('-d', '--debug', is_flag=True,
+              help='Debug mode flag.')
 @click.pass_context
-def run_server(ctx):
-    # TODO: implement the command for starting web app (use app.run)
-    # Don't forget to app the session from context to app
-    ...
+def run_server(ctx, **configuration):
+
+    debug = configuration['debug']
+    port = configuration['port']
+    hostname = configuration['host']
+    app.run(debug=debug, host=hostname, port=int(port))
 
 
 # ENDING  NEW FLASK SKELETON
