@@ -565,6 +565,11 @@ def post():
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session_loc.delete(url)
                             return str(response)
+                        if data['action'] == 'edited':
+                            header_data = {"name": label_name, "color": label_color}
+                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                            response = session_loc.patch(url, json.dumps(header_data))
+                            return str(response)
 
     return "ok"
 
