@@ -17,7 +17,7 @@ import hashlib
 # PRIVATE FUNCTIONS
 
 
-def request(url, session):
+def request_create(url, session):
     r = session.get(url)
     if r.status_code == 404:
         click.echo("GitHub: ERROR 404 - Not Found")
@@ -85,12 +85,12 @@ def print_labels(session, name_repo):
 
 
 def get_all_labels(session, name_repo):
-    json_data = request('https://api.github.com/repos/' + name_repo + '/labels?per_page=100&page=1', session)
+    json_data = request_create('https://api.github.com/repos/' + name_repo + '/labels?per_page=100&page=1', session)
     return json_data
 
 
 def get_all_repos(session):
-    json_data = request('https://api.github.com/user/repos?per_page=100&page=1', session)
+    json_data = request_create('https://api.github.com/user/repos?per_page=100&page=1', session)
     return json_data
 
 
@@ -510,17 +510,21 @@ app = LabelordWeb(__name__)
 
 @app.route('/', methods=['POST'])
 def post():
-    data = request.get_json()
-    signature = request.headers['X-Hub-Signature'].split("=")[1]
-    secret_verification(signature, request.data)
+    data = request.json
+    if data:
+        signature = request.headers['X-Hub-Signature'].split("=")[1]
+        secret_verification(signature, request.data)
 
-    if data["action"] == "created":
-        return 'CREATED'
+        if "action" in data:
+            if data["action"] == "created":
+                return 'CREATED'
 
-    if data['action'] == 'deleted':
-        return 'DELETED'
+            if data['action'] == 'deleted':
+                return 'DELETED'
 
-    return 'OK POST'
+        return str(data)
+    else:
+        return "ok"
 
 
 @app.route('/', methods=['GET'])
@@ -534,6 +538,21 @@ def get():
     else:
         if app.config_file:
             return create_table_html_repos(app.config_file, session)
+        else:
+            config_file = configparser.ConfigParser()
+            config_file.optionxform = str
+
+            if config_file.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
+                repos = get_repos(config_file, False, session)
+                info = "master-to-master labelord GitHub webhook "
+                html_result = info + "<table>"
+                for name in repos:
+                    url = "https://github.com/" + name
+                    html_result = html_result + "<tr>" + "<th>" + url + "</th>" + "</tr>"
+
+                html_result = html_result + "</table>"
+                return html_result
+
 
     return "Nothing happen GET"
 
