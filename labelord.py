@@ -561,28 +561,28 @@ def post():
                 label_name = data['label']['name']
                 repos = get_repos_web(config_file, session)
                 for repo in repos:
-                    if not repo in app.updated_repos and repo_name_payload != repo:
-                        if "action" in data:
-                            app.updated_repos.append(repo)
-                            if data["action"] == "created":
-                                header_data = {"name": label_name, "color": label_color}
-                                url = 'https://api.github.com/repos/' + repo + '/labels'
-                                response = session.post(url, json.dumps(header_data))
-                                return str(response)
-                            if data['action'] == 'deleted':
-                                url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                                response = session.delete(url)
-                                return str(response.json())
-                            if data['action'] == 'edited':
-                                new_name = label_name
-                                if "name" in data["changes"]:
-                                    label_name = data["changes"]["name"]["from"]
-                                header_data = {"name": new_name, "color": label_color}
-                                url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                                response = session.patch(url, json.dumps(header_data))
-                                return str(url + str(header_data))
+                    # if not repo in app.updated_repos and repo_name_payload != repo:
+                    if "action" in data:
+                        app.updated_repos.append(repo)
+                        if data["action"] == "created":
+                            header_data = {"name": label_name, "color": label_color}
+                            url = 'https://api.github.com/repos/' + repo + '/labels'
+                            response = session.post(url, json.dumps(header_data))
+                            return str(response)
+                        if data['action'] == 'deleted':
+                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                            response = session.delete(url)
+                            return str(response.json())
+                        if data['action'] == 'edited':
+                            new_name = label_name
+                            if "name" in data["changes"]:
+                                label_name = data["changes"]["name"]["from"]
+                            header_data = {"name": new_name, "color": label_color}
+                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                            response = session.patch(url, json.dumps(header_data))
+                            return str(url + str(header_data))
 
-                app.updated_repos = []
+                # app.updated_repos = []
                 return "ok"
     return "ok"
 
