@@ -490,6 +490,7 @@ class LabelordWeb(flask.Flask):
     ctx = None
     configuration = None
     config_file = None
+    updated_repos = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -547,19 +548,33 @@ def post():
                 session_loc = app.local_session
             else:
                 session_loc = prepare_session_web(config_file)
-
+            repo_name_payload = data['repository']['full_name']
+            label_color = data['label']['color']
+            label_name = data['label']['name']
             repos = get_repos(config_file, False, session_loc)
-            return str(repos)
+            for repo in repos:
+                if not repo in app.updated_repos and repo_name_payload != repo:
+                    if "action" in data:
+                        app.updated_repos.append(repo)
+                        if data["action"] == "created":
+                            header_data = {"name": label_name, "color": label_color}
+                            url = 'https://api.github.com/repos/' + repo + '/labels'
+                            response = session_loc.post(url, json.dumps(header_data))
+                            return str(response)
+                        if data['action'] == 'deleted':
+                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                            response = session_loc.delete(url)
+                            return str(response)
 
+    return "ok"
 
+        # if "action" in data:
+        #     if data["action"] == "created":
+        #         return 'CREATED'
+        #
+        #     if data['action'] == 'deleted':
+        #         return 'DELETED'
 
-    #     if "action" in data:
-    #         if data["action"] == "created":
-    #             return 'CREATED'
-    #
-    #         if data['action'] == 'deleted':
-    #             return 'DELETED'
-    #
     #     return str(data)
     # else:
     #     return "ok"
