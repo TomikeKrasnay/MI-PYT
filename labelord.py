@@ -9,6 +9,10 @@ import sys
 import requests
 import configparser
 import json
+from flask import request
+import hmac
+import hashlib
+
 
 # PRIVATE FUNCTIONS
 
@@ -360,13 +364,29 @@ def remove_labels_from_all_repos(session, configuration, repos):
 def create_table_html_repos(config, session):
     config_file = setup_config_web(config)
     repos = get_repos(config_file, False, session)
-    html_result = "master-to-master labelord GitHub webhook " + "<table>"
+    info = "master-to-master labelord GitHub webhook "
+    html_result = info + "<table>"
     for name in repos:
         url = "https://github.com/" + name
         html_result = html_result + "<tr>" + "<th>" + url + "</th>" + "</tr>"
 
     html_result = html_result + "</table>"
     return html_result
+
+
+def secret_verification(signature, message):
+    if app.ctx:
+        config = app.ctx.obj['config_file']
+        config_file = configparser.ConfigParser()
+        config_file.optionxform = str
+
+        if not config_file.read(config):
+            exit(3)
+
+        secret = config_file['github']['webhook_secret']
+        mac = hmac.new(bytes(secret, 'utf-8'), msg=message, digestmod=hashlib.sha1)
+        if not str(mac.hexdigest()) == signature:
+            return 'NO'
 
 # PUBLIC FUNCTIONS
 
@@ -479,7 +499,7 @@ class LabelordWeb(flask.Flask):
     def reload_config(self):
         if 'LABELORD_CONFIG' in os.environ:
             self.config_file = os.environ['LABELORD_CONFIG']
-            config = setup_config_web(self.config_file)
+            setup_config_web(self.config_file)
 
 
 # TODO: instantiate LabelordWeb app
@@ -490,12 +510,24 @@ app = LabelordWeb(__name__)
 
 @app.route('/', methods=['POST'])
 def post():
-    return 'OK post'
+    data = request.get_json()
+    signature = request.headers['X-Hub-Signature'].split("=")[1]
+    secret_verification(signature, request.data)
+
+    if data["action"] == "created":
+        return 'CREATED'
+
+    if data['action'] == 'deleted':
+        return 'DELETED'
+
+    return 'OK POST'
 
 
 @app.route('/', methods=['GET'])
 def get():
-    session = app.local_session
+    session = requests.session()
+    if app.local_session:
+        session = app.local_session
     if app.ctx:
         config = app.ctx.obj['config_file']
         return create_table_html_repos(config, session)
@@ -503,7 +535,7 @@ def get():
         if app.config_file:
             return create_table_html_repos(app.config_file, session)
 
-    return "OK get"
+    return "Nothing happen GET"
 
 
 # TODO: implement web app
