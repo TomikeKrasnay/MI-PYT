@@ -568,11 +568,11 @@ def post():
                             header_data = {"name": label_name, "color": label_color}
                             url = 'https://api.github.com/repos/' + repo + '/labels'
                             response = session.post(url, json.dumps(header_data))
-                            return str(response)
+                            # return str(response)
                         if data['action'] == 'deleted':
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.delete(url)
-                            return str(response.json())
+                            # return str(response.json())
                         if data['action'] == 'edited':
                             new_name = label_name
                             if "name" in data["changes"]:
@@ -580,7 +580,7 @@ def post():
                             header_data = {"name": new_name, "color": label_color}
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.patch(url, json.dumps(header_data))
-                            return str(url + str(header_data))
+                            # return str(url + str(header_data))
 
                 # app.updated_repos = []
                 return "ok"
