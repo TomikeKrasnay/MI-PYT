@@ -265,6 +265,19 @@ def prepare_session(ctx):
     return ctx
 
 
+def prepare_session_web(config_file):
+    token = config_file['github']['token']
+    session = requests.Session()
+    session.headers = {'User-Agent': 'Python'}
+
+    def token_auth(req):
+        req.headers['Authorization'] = 'token ' + token
+        return req
+
+    session.auth = token_auth
+    return session
+
+
 def setup_config(config, is_web):
     config_file = configparser.ConfigParser()
     config_file.optionxform = str
@@ -375,6 +388,7 @@ def create_table_html_repos(config, session):
 
 
 def secret_verification(signature, message):
+    # TODO config on server
     if app.ctx:
         config = app.ctx.obj['config_file']
         config_file = configparser.ConfigParser()
@@ -514,17 +528,41 @@ def post():
     if data:
         signature = request.headers['X-Hub-Signature'].split("=")[1]
         secret_verification(signature, request.data)
+        config_file = None
+        if app.ctx:
+            config = app.ctx.obj['config_file']
+            config_file = setup_config_web(config)
+        else:
+            if app.config_file:
+                config_file = setup_config_web(app.config_file)
+            else:
+                config_f = configparser.ConfigParser()
+                config_f.optionxform = str
+                if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
+                    config_file = config_f
 
-        if "action" in data:
-            if data["action"] == "created":
-                return 'CREATED'
+        if config_file:
+            session_loc = None
+            if app.local_session:
+                session_loc = app.local_session
+            else:
+                session_loc = prepare_session_web(config_file)
 
-            if data['action'] == 'deleted':
-                return 'DELETED'
+            repos = get_repos(config_file, False, session_loc)
+            return str(repos)
 
-        return str(data)
-    else:
-        return "ok"
+
+
+    #     if "action" in data:
+    #         if data["action"] == "created":
+    #             return 'CREATED'
+    #
+    #         if data['action'] == 'deleted':
+    #             return 'DELETED'
+    #
+    #     return str(data)
+    # else:
+    #     return "ok"
 
 
 @app.route('/', methods=['GET'])
@@ -552,7 +590,6 @@ def get():
 
                 html_result = html_result + "</table>"
                 return html_result
-
 
     return "Nothing happen GET"
 
