@@ -278,7 +278,7 @@ def prepare_session_web(config_file):
     return session
 
 
-def setup_config(config, is_web):
+def setup_config(config):
     config_file = configparser.ConfigParser()
     config_file.optionxform = str
 
@@ -290,15 +290,14 @@ def setup_config(config, is_web):
         click.echo("No repositories specification has been found")
         exit(7)
 
-    if not is_web:
-        if not config_file['repos']:
-            click.echo("SUMMARY: 0 repo(s) updated successfully")
-            exit(0)
+    if not config_file['repos']:
+        click.echo("SUMMARY: 0 repo(s) updated successfully")
+        exit(0)
 
-        if 'labels' not in config_file:
-            # if not is_quiet:
-            click.echo("No labels specification has been found")
-            exit(6)
+    if 'labels' not in config_file:
+        # if not is_quiet:
+        click.echo("No labels specification has been found")
+        exit(6)
 
     return config_file
 
@@ -353,10 +352,19 @@ def get_repos(config_file, configuration, session):
         if config_file['repos'].getboolean(key):
             repos.append(key)
 
-    if configuration:
+    if configuration['all_repos']:
         repos = get_all_repos(session)
         repos = parse_repos(repos)
 
+    return repos
+
+
+def get_repos_web(config_file, session):
+    repos = []
+    config_repos = config_file['repos']
+    for key in config_repos:
+        if config_file['repos'].getboolean(key):
+            repos.append(key)
     return repos
 
 
@@ -376,7 +384,7 @@ def remove_labels_from_all_repos(session, configuration, repos):
 
 def create_table_html_repos(config, session):
     config_file = setup_config_web(config)
-    repos = get_repos(config_file, False, session)
+    repos = get_repos_web(config_file, session)
     info = "master-to-master labelord GitHub webhook "
     html_result = info + "<table>"
     for name in repos:
@@ -451,8 +459,8 @@ def run(ctx, mode, **configuration):
     prepare_session(ctx)
     session = ctx.obj['session']
     config = ctx.obj['config_file']
-    config_file = setup_config(config, False)
-    repos = get_repos(config_file, ('all_repos' in configuration), session)
+    config_file = setup_config(config)
+    repos = get_repos(config_file, configuration, session)
     all_errors = 0
     new_labels = config_file['labels']
     # check if exist template repo
@@ -544,15 +552,14 @@ def post():
                         config_file = config_f
 
             if config_file:
-                session_loc = None
                 if app.local_session:
-                    session_loc = app.local_session
+                    session = app.local_session
                 else:
-                    session_loc = prepare_session_web(config_file)
+                    session = prepare_session_web(config_file)
                 repo_name_payload = data['repository']['full_name']
                 label_color = data['label']['color']
                 label_name = data['label']['name']
-                repos = get_repos(config_file, False, session_loc)
+                repos = get_repos_web(config_file, session)
                 for repo in repos:
                     if not repo in app.updated_repos and repo_name_payload != repo:
                         if "action" in data:
@@ -560,20 +567,22 @@ def post():
                             if data["action"] == "created":
                                 header_data = {"name": label_name, "color": label_color}
                                 url = 'https://api.github.com/repos/' + repo + '/labels'
-                                response = session_loc.post(url, json.dumps(header_data))
-                                # return str(response)
+                                response = session.post(url, json.dumps(header_data))
+                                return str(response)
                             if data['action'] == 'deleted':
                                 url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                                response = session_loc.delete(url)
-                                # return str(response)
+                                response = session.delete(url)
+                                return str(response.json())
                             if data['action'] == 'edited':
                                 new_name = label_name
                                 if "name" in data["changes"]:
                                     label_name = data["changes"]["name"]["from"]
                                 header_data = {"name": new_name, "color": label_color}
                                 url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                                response = session_loc.patch(url, json.dumps(header_data))
-                                # return str(url + str(header_data))
+                                response = session.patch(url, json.dumps(header_data))
+                                return str(url + str(header_data))
+
+                app.updated_repos = []
                 return "ok"
     return "ok"
 
@@ -605,7 +614,7 @@ def get():
             config_file.optionxform = str
 
             if config_file.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
-                repos = get_repos(config_file, False, session)
+                repos = get_repos_web(config_file, session)
                 info = "master-to-master labelord GitHub webhook "
                 html_result = info + "<table>"
                 for name in repos:
