@@ -527,50 +527,52 @@ app = LabelordWeb(__name__)
 def post():
     data = request.json
     if data:
-        signature = request.headers['X-Hub-Signature'].split("=")[1]
-        secret_verification(signature, request.data)
-        config_file = None
-        if app.ctx:
-            config = app.ctx.obj['config_file']
-            config_file = setup_config_web(config)
-        else:
-            if app.config_file:
-                config_file = setup_config_web(app.config_file)
+        if "action" in data:
+            signature = request.headers['X-Hub-Signature'].split("=")[1]
+            secret_verification(signature, request.data)
+            config_file = None
+            if app.ctx:
+                config = app.ctx.obj['config_file']
+                config_file = setup_config_web(config)
             else:
-                config_f = configparser.ConfigParser()
-                config_f.optionxform = str
-                if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
-                    config_file = config_f
+                if app.config_file:
+                    config_file = setup_config_web(app.config_file)
+                else:
+                    config_f = configparser.ConfigParser()
+                    config_f.optionxform = str
+                    if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
+                        config_file = config_f
 
-        if config_file:
-            session_loc = None
-            if app.local_session:
-                session_loc = app.local_session
-            else:
-                session_loc = prepare_session_web(config_file)
-            repo_name_payload = data['repository']['full_name']
-            label_color = data['label']['color']
-            label_name = data['label']['name']
-            repos = get_repos(config_file, False, session_loc)
-            for repo in repos:
-                if not repo in app.updated_repos and repo_name_payload != repo:
-                    if "action" in data:
-                        app.updated_repos.append(repo)
-                        if data["action"] == "created":
-                            header_data = {"name": label_name, "color": label_color}
-                            url = 'https://api.github.com/repos/' + repo + '/labels'
-                            response = session_loc.post(url, json.dumps(header_data))
-                            return str(response)
-                        if data['action'] == 'deleted':
-                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                            response = session_loc.delete(url)
-                            return str(response)
-                        if data['action'] == 'edited':
-                            header_data = {"name": label_name, "color": label_color}
-                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                            response = session_loc.patch(url, json.dumps(header_data))
-                            return str(response)
-
+            if config_file:
+                session_loc = None
+                if app.local_session:
+                    session_loc = app.local_session
+                else:
+                    session_loc = prepare_session_web(config_file)
+                repo_name_payload = data['repository']['full_name']
+                label_color = data['label']['color']
+                label_name = data['label']['name']
+                repos = get_repos(config_file, False, session_loc)
+                for repo in repos:
+                    if not repo in app.updated_repos and repo_name_payload != repo:
+                        if "action" in data:
+                            app.updated_repos.append(repo)
+                            if data["action"] == "created":
+                                header_data = {"name": label_name, "color": label_color}
+                                url = 'https://api.github.com/repos/' + repo + '/labels'
+                                response = session_loc.post(url, json.dumps(header_data))
+                                return str(response)
+                            if data['action'] == 'deleted':
+                                url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                                response = session_loc.delete(url)
+                                return str(response)
+                            if data['action'] == 'edited':
+                                if "name" in data["changes"]:
+                                    label_name = data["changes"]["name"]["from"]
+                                header_data = {"name": label_name, "color": label_color}
+                                url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+                                response = session_loc.patch(url, json.dumps(header_data))
+                                return str(response)
     return "ok"
 
         # if "action" in data:
