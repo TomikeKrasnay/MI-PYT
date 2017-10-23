@@ -562,11 +562,9 @@ def post():
                 repos = get_repos_web(config_file, session)
                 response_mess = ""
                 for repo in repos:
-
                     repo_name_payload = data['repository']['full_name']
                     label_color = data['label']['color']
                     label_name = data['label']['name']
-
                     # if not repo in app.updated_repos and repo_name_payload != repo:
                     if "action" in data:
                         # app.updated_repos.append(repo)
@@ -581,7 +579,7 @@ def post():
                         if data['action'] == 'deleted':
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.delete(url)
-                            response_mess = response_mess + repo + str(response)
+                            response_mess = response_mess + repo + url + str(response)
                             # return str(response.json())
                             if response.json():
                                 response_mess = response_mess + str(response.json())
