@@ -395,20 +395,13 @@ def create_table_html_repos(config, session):
     return html_result
 
 
-def secret_verification(signature, message):
-    # TODO config on server
-    if app.ctx:
-        config = app.ctx.obj['config_file']
-        config_file = configparser.ConfigParser()
-        config_file.optionxform = str
+def secret_verification(signature, message, config_file):
 
-        if not config_file.read(config):
-            exit(3)
-
-        secret = config_file['github']['webhook_secret']
-        mac = hmac.new(bytes(secret, 'utf-8'), msg=message, digestmod=hashlib.sha1)
-        if not str(mac.hexdigest()) == signature:
-            return 'NO'
+    secret = config_file['github']['webhook_secret']
+    mac = hmac.new(bytes(secret, 'utf-8'), msg=message, digestmod=hashlib.sha1)
+    if not str(mac.hexdigest()) == signature:
+        return False
+    return True
 
 # PUBLIC FUNCTIONS
 
@@ -537,29 +530,36 @@ def post():
     data = request.json
     if data:
         if "action" in data:
-            if not 'X-Hub-Signature' in request.headers:
-                exit(401)
-                # return '401 UNAUTHORIZED'
-            signature = request.headers['X-Hub-Signature'].split("=")[1]
-            secret_verification(signature, request.data)
             config_file = None
-            if app.ctx:
-                config = app.ctx.obj['config_file']
-                config_file = setup_config_web(config)
+            if app.config_file:
+                config_file = setup_config_web(app.config_file)
             else:
-                if app.config_file:
-                    config_file = setup_config_web(app.config_file)
+                if app.ctx:
+                    config = app.ctx.obj['config_file']
+                    config_file = setup_config_web(config)
                 else:
                     config_f = configparser.ConfigParser()
                     config_f.optionxform = str
                     if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
                         config_file = config_f
 
-            if config_file:
-                if app.local_session:
-                    session = app.local_session
-                else:
-                    session = prepare_session_web(config_file)
+            if not config_file:
+                return "false"
+
+            if 'X-Hub-Signature' not in request.headers:
+                code = 401
+                msg = 'UNAUTHORIZED'
+                return msg, code
+            signature = request.headers['X-Hub-Signature'].split("=")[1]
+            if not secret_verification(signature, request.data, config_file):
+                code = 401
+                msg = 'UNAUTHORIZED'
+                return msg, code
+            session = requests.session()
+            if app.local_session:
+                session = app.local_session
+            else:
+                session = prepare_session_web(config_file)
             repos = get_repos_web(config_file, session)
             label_name = data['label']['name']
             repo_name_payload = data['repository']['full_name']
@@ -577,7 +577,7 @@ def post():
                             header_data = {"name": label_name, "color": label_color}
                             url = 'https://api.github.com/repos/' + repo + '/labels'
                             response = session.post(url, json.dumps(header_data))
-                            response_mess = response_mess + repo + str(response)
+                            response_mess = response_mess + url + str(response)
                             if response.json():
                                 response_mess = response_mess + str(response.json())
                         if data['action'] == 'deleted':
@@ -598,20 +598,11 @@ def post():
                                 response_mess = response_mess + str(response.json())
                         # return str(url + str(header_data))
 
-                # app.updated_repos = []
-                return response_mess
+            return response_mess
+            # code = 200
+            # msg = 'OK'
+            # return msg, code
     return "ok"
-
-        # if "action" in data:
-        #     if data["action"] == "created":
-        #         return 'CREATED'
-        #
-        #     if data['action'] == 'deleted':
-        #         return 'DELETED'
-
-    #     return str(data)
-    # else:
-    #     return "ok"
 
 
 @app.route('/', methods=['GET'])
