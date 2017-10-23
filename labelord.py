@@ -579,10 +579,10 @@ def post():
                         if data['action'] == 'deleted':
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.delete(url)
-                            response_mess = response_mess + repo + url + str(response)
-                            # return str(response.json())
-                            if response.json():
-                                response_mess = response_mess + str(response.json())
+                            response_mess = response_mess + repo + url
+                            # # return str(response.json())
+                            # if response.json():
+                            #     response_mess = response_mess + str(response.json())
                         if data['action'] == 'edited':
                             new_name = label_name
                             if "name" in data["changes"]:
