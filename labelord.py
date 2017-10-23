@@ -536,6 +536,9 @@ def post():
     data = request.json
     if data:
         if "action" in data:
+            if not 'X-Hub-Signature' in request.headers:
+                exit(401)
+                # return '401 UNAUTHORIZED'
             signature = request.headers['X-Hub-Signature'].split("=")[1]
             secret_verification(signature, request.data)
             config_file = None
@@ -564,18 +567,22 @@ def post():
                 for repo in repos:
                     # if not repo in app.updated_repos and repo_name_payload != repo:
                     if "action" in data:
-                        app.updated_repos.append(repo)
+                        # app.updated_repos.append(repo)
                         if data["action"] == "created":
                             header_data = {"name": label_name, "color": label_color}
                             url = 'https://api.github.com/repos/' + repo + '/labels'
                             response = session.post(url, json.dumps(header_data))
                             response_mess = response_mess + repo + str(response)
+                            if response.json():
+                                response_mess = response_mess + str(response.json())
                             # return str(response)
                         if data['action'] == 'deleted':
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.delete(url)
                             response_mess = response_mess + repo + str(response)
                             # return str(response.json())
+                            if response.json():
+                                response_mess = response_mess + str(response.json())
                         if data['action'] == 'edited':
                             new_name = label_name
                             if "name" in data["changes"]:
@@ -584,6 +591,8 @@ def post():
                             url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
                             response = session.patch(url, json.dumps(header_data))
                             response_mess = response_mess + repo + str(response)
+                            if response.json():
+                                response_mess = response_mess + str(response.json())
                             # return str(url + str(header_data))
 
                 # app.updated_repos = []
