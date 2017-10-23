@@ -559,12 +559,14 @@ def post():
                     session = app.local_session
                 else:
                     session = prepare_session_web(config_file)
-                repo_name_payload = data['repository']['full_name']
-                label_color = data['label']['color']
-                label_name = data['label']['name']
                 repos = get_repos_web(config_file, session)
                 response_mess = ""
                 for repo in repos:
+
+                    repo_name_payload = data['repository']['full_name']
+                    label_color = data['label']['color']
+                    label_name = data['label']['name']
+
                     # if not repo in app.updated_repos and repo_name_payload != repo:
                     if "action" in data:
                         # app.updated_repos.append(repo)
