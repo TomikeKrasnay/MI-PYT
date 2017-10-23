@@ -563,7 +563,7 @@ def post():
             repos = get_repos_web(config_file, session)
             label_name = data['label']['name']
             response_mess = ""
-            if app.last_action != data["action"] and app.last_updated_label != label_name:
+            if app.last_action != data["action"] or app.last_updated_label != label_name:
                 for repo in repos:
                     label_color = data['label']['color']
                     label_name = data['label']['name']
