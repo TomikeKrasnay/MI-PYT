@@ -278,6 +278,18 @@ def prepare_session_web(config_file):
     return session
 
 
+def add_token_to_session(session, config_file):
+    token = config_file['github']['token']
+    session.headers = {'User-Agent': 'Python'}
+
+    def token_auth(req):
+        req.headers['Authorization'] = 'token ' + token
+        return req
+
+    session.auth = token_auth
+    return session
+
+
 def setup_config(config):
     config_file = configparser.ConfigParser()
     config_file.optionxform = str
@@ -400,6 +412,63 @@ def secret_verification(signature, message, config_file):
     secret = config_file['github']['webhook_secret']
     mac = hmac.new(bytes(secret, 'utf-8'), msg=message, digestmod=hashlib.sha1)
     if not str(mac.hexdigest()) == signature:
+        return False
+    return True
+
+
+def perform_action_hook(data, session, repo):
+    label_color = data['label']['color']
+    label_name = data['label']['name']
+    app.last_updated_label = label_name
+    # if not repo in app.updated_repos and repo_name_payload != repo:
+    # app.updated_repos.append(repo)
+    if data["action"] == "created":
+        app.last_action = "created"
+        header_data = {"name": label_name, "color": label_color}
+        url = 'https://api.github.com/repos/' + repo + '/labels'
+        response = session.post(url, json.dumps(header_data))
+        # response_mess = response_mess + url + str(response)
+        # if response.json():
+        #     response_mess = response_mess + str(response.json())
+    if data['action'] == 'deleted':
+        app.last_action = "deleted"
+        url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+        response = session.delete(url)
+        # response_mess = response_mess + repo + url
+    if data['action'] == 'edited':
+        app.last_action = "edited"
+        new_name = label_name
+        if "name" in data["changes"]:
+            label_name = data["changes"]["name"]["from"]
+        header_data = {"name": new_name, "color": label_color}
+        url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
+        response = session.patch(url, json.dumps(header_data))
+        # response_mess = response_mess + repo + str(response)
+        # if response.json():
+        #     response_mess = response_mess + str(response.json())
+
+
+def get_hook_config():
+    config_file = None
+    if app.config_file:
+        config_file = setup_config_web(app.config_file)
+    else:
+        if app.ctx:
+            config = app.ctx.obj['config_file']
+            config_file = setup_config_web(config)
+        else:
+            config_f = configparser.ConfigParser()
+            config_f.optionxform = str
+            if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
+                config_file = config_f
+    return config_file
+
+
+def secret_validation(config_file):
+    if 'X-Hub-Signature' not in request.headers:
+        return False
+    signature = request.headers['X-Hub-Signature'].split("=")[1]
+    if not secret_verification(signature, request.data, config_file):
         return False
     return True
 
@@ -530,79 +599,30 @@ def post():
     data = request.json
     if data:
         if "action" in data:
-            config_file = None
-            if app.config_file:
-                config_file = setup_config_web(app.config_file)
-            else:
-                if app.ctx:
-                    config = app.ctx.obj['config_file']
-                    config_file = setup_config_web(config)
-                else:
-                    config_f = configparser.ConfigParser()
-                    config_f.optionxform = str
-                    if config_f.read('/home/tomikeKrasnay/MI-PYT/config.cfg'):
-                        config_file = config_f
-
-            if not config_file:
-                return "false"
-
-            if 'X-Hub-Signature' not in request.headers:
+            config_file = get_hook_config()
+            if not secret_validation(config_file):
                 code = 401
                 msg = 'UNAUTHORIZED'
                 return msg, code
-            signature = request.headers['X-Hub-Signature'].split("=")[1]
-            if not secret_verification(signature, request.data, config_file):
-                code = 401
-                msg = 'UNAUTHORIZED'
-                return msg, code
-            session = requests.session()
             if app.local_session:
                 session = app.local_session
+                session = add_token_to_session(session, config_file)
             else:
                 session = prepare_session_web(config_file)
             repos = get_repos_web(config_file, session)
             label_name = data['label']['name']
             repo_name_payload = data['repository']['full_name']
-            response_mess = ""
+            if repo_name_payload not in repos:
+                code = 400
+                msg = 'BAD REQUEST'
+                return msg, code
             if app.last_action != data["action"] or app.last_updated_label != label_name:
                 for repo in repos:
                     if repo != repo_name_payload:
-                        label_color = data['label']['color']
-                        label_name = data['label']['name']
-                        app.last_updated_label = label_name
-                        # if not repo in app.updated_repos and repo_name_payload != repo:
-                        # app.updated_repos.append(repo)
-                        if data["action"] == "created":
-                            app.last_action = "created"
-                            header_data = {"name": label_name, "color": label_color}
-                            url = 'https://api.github.com/repos/' + repo + '/labels'
-                            response = session.post(url, json.dumps(header_data))
-                            response_mess = response_mess + url + str(response)
-                            if response.json():
-                                response_mess = response_mess + str(response.json())
-                        if data['action'] == 'deleted':
-                            app.last_action = "deleted"
-                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                            response = session.delete(url)
-                            response_mess = response_mess + repo + url
-                        if data['action'] == 'edited':
-                            app.last_action = "edited"
-                            new_name = label_name
-                            if "name" in data["changes"]:
-                                label_name = data["changes"]["name"]["from"]
-                            header_data = {"name": new_name, "color": label_color}
-                            url = 'https://api.github.com/repos/' + repo + '/labels/' + label_name
-                            response = session.patch(url, json.dumps(header_data))
-                            response_mess = response_mess + repo + str(response)
-                            if response.json():
-                                response_mess = response_mess + str(response.json())
-                        # return str(url + str(header_data))
-
-            return response_mess
-            # code = 200
-            # msg = 'OK'
-            # return msg, code
-    return "ok"
+                        perform_action_hook(data, session, repo)
+    code = 200
+    msg = 'OK'
+    return msg, code
 
 
 @app.route('/', methods=['GET'])
