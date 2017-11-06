@@ -1,0 +1,29 @@
+Metadata-Version: 1.2
+Name: labelord-tomikeKrasnay
+Version: 0.3.0
+Summary: Global multi-project management of GitHub labels
+Home-page: https://github.com/TomikeKrasnay
+Author: Tomáš Krasnay
+Author-email: krasntom@fit.cvut.cz
+License: Public Domain
+Description-Content-Type: UNKNOWN
+Description: labelord
+        
+        MIT License
+Keywords: github,labels,cli,web
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Developers
+Classifier: License :: Public Domain
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Utilities
+Requires-Python: ~=3.6
