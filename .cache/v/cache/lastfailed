@@ -1,9 +1,0 @@
-{
-  "tests_cli/test_run_tricky.py::test_version[False]": true,
-  "tests_cli/test_run_tricky.py::test_version[True]": true,
-  "tests_module/test_distribution.py::test_package_info": true,
-  "tests_module/test_distribution.py::test_sdist": true,
-  "tests_module/test_install.py::test_install[GitHub]": true,
-  "tests_module/test_install.py::test_install[Test-PyPI]": true,
-  "tests_module/test_submodules.py::test_submodules": true
-}
