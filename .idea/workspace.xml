@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b214652-9ec9-4bbe-b788-858b48bf2525" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/README" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/labelord_tomikeKrasnay-0.3.0.tar.gz" afterPath="$PROJECT_DIR$/dist/labelord_tomikeKrasnay-0.3.0.tar.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MANIFEST.in" afterPath="$PROJECT_DIR$/MANIFEST.in" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.rst" afterPath="$PROJECT_DIR$/README.rst" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord/basePrinter.py" afterPath="$PROJECT_DIR$/labelord/basePrinter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord/cli.py" afterPath="$PROJECT_DIR$/labelord/cli.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord/communicator.py" afterPath="$PROJECT_DIR$/labelord/communicator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord/helper.py" afterPath="$PROJECT_DIR$/labelord/helper.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/labelord/runModes.py" afterPath="$PROJECT_DIR$/labelord/runModes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.py" afterPath="$PROJECT_DIR$/setup.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests_module/fixtures/test_config.cfg" afterPath="$PROJECT_DIR$/tests_module/fixtures/test_config.cfg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
