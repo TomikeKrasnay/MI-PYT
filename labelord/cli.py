@@ -22,6 +22,8 @@ from .web import app
                       prog_name='labelord')
 @click.pass_context
 def cli(ctx, config, token):
+    """The initial command line entry point for the program."""
+
     ctx.obj['config'] = create_config(config, token)
     ctx.obj['config'].optionxform = str
     if token is not None:
@@ -37,6 +39,7 @@ def cli(ctx, config, token):
 @cli.command(help='Listing accessible repositories.')
 @click.pass_context
 def list_repos(ctx):
+    """Command to print all Github repositories."""
     github = retrieve_github_client(ctx)
     try:
         repos = github.list_repositories()
@@ -50,6 +53,7 @@ def list_repos(ctx):
 @click.argument('repository')
 @click.pass_context
 def list_labels(ctx, repository):
+    """Command to print all labels in specific Github repository."""
     github = retrieve_github_client(ctx)
     try:
         labels = github.list_labels(repository)
@@ -75,6 +79,17 @@ def list_labels(ctx, repository):
               help='Run for all repositories available.')
 @click.pass_context
 def run(ctx, mode, template_repo, dry_run, verbose, quiet, all_repos):
+    """Command to run the program and update all necessary labels.
+
+        Args:
+            ctx: Current click context.
+            mode: Specifies whether the program should run in Update or Replace mode.
+            template_repo: Template repository to pull labels from.
+            dry_run: If is dry run mode.
+            verbose: If is verbose mode.
+            quiet: If is quiet mode.
+            all_repos: Whether the program should run on all available repositories.
+    """
     github = retrieve_github_client(ctx)
     labels = extract_labels(
         github, template_repo,
@@ -103,10 +118,21 @@ def run(ctx, mode, template_repo, dry_run, verbose, quiet, all_repos):
               help='Turns on DEBUG mode.')
 @click.pass_context
 def run_server(ctx, host, port, debug):
+    """Command to start the Flask server.
+
+        Args:
+            ctx: Current click context.
+            host: Hostname to host.
+            port: Port to host.
+            debug: Debug mode.
+
+    """
     app.labelord_config = ctx.obj['config']
     app.github = retrieve_github_client(ctx)
     app.run(host=host, port=port, debug=debug)
 
 
 def main():
+    """The main function."""
+
     cli(obj={})

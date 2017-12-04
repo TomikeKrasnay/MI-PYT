@@ -1,0 +1,607 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>labelord package &#8212; labelord 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Configuration" href="tutorial.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="labelord-package">
+<h1>labelord package<a class="headerlink" href="#labelord-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-labelord.basePrinter">
+<span id="labelord-baseprinter-module"></span><h2>labelord.basePrinter module<a class="headerlink" href="#module-labelord.basePrinter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="labelord.basePrinter.BasePrinter">
+<em class="property">class </em><code class="descclassname">labelord.basePrinter.</code><code class="descname">BasePrinter</code><a class="headerlink" href="#labelord.basePrinter.BasePrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Class for various printing types.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>repos (set): All repositories.
+errors (int): Count of errors.</dd>
+</dl>
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.ERROR_SUMMARY">
+<code class="descname">ERROR_SUMMARY</code><em class="property"> = '{} error(s) in total, please check log above'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.ERROR_SUMMARY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.EVENT_CREATE">
+<code class="descname">EVENT_CREATE</code><em class="property"> = 'ADD'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.EVENT_CREATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.EVENT_DELETE">
+<code class="descname">EVENT_DELETE</code><em class="property"> = 'DEL'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.EVENT_DELETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.EVENT_LABELS">
+<code class="descname">EVENT_LABELS</code><em class="property"> = 'LBL'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.EVENT_LABELS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.EVENT_UPDATE">
+<code class="descname">EVENT_UPDATE</code><em class="property"> = 'UPD'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.EVENT_UPDATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.RESULT_DRY">
+<code class="descname">RESULT_DRY</code><em class="property"> = 'DRY'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.RESULT_DRY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.RESULT_ERROR">
+<code class="descname">RESULT_ERROR</code><em class="property"> = 'ERR'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.RESULT_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.RESULT_SUCCESS">
+<code class="descname">RESULT_SUCCESS</code><em class="property"> = 'SUC'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.RESULT_SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.basePrinter.BasePrinter.SUCCESS_SUMMARY">
+<code class="descname">SUCCESS_SUMMARY</code><em class="property"> = '{} repo(s) updated successfully'</em><a class="headerlink" href="#labelord.basePrinter.BasePrinter.SUCCESS_SUMMARY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.BasePrinter.add_repo">
+<code class="descname">add_repo</code><span class="sig-paren">(</span><em>slug</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.BasePrinter.add_repo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a repository to the class variable repos.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>slug (str): A GitHub repository slug.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.BasePrinter.event">
+<code class="descname">event</code><span class="sig-paren">(</span><em>event</em>, <em>result</em>, <em>repo</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.BasePrinter.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when event is printed.</p>
+<p>In this parent method only counting errors.
+Args:</p>
+<blockquote>
+<div>event (str): Which event has been use on the repo.
+result (str): Result
+repo: repository</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.BasePrinter.summary">
+<code class="descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.BasePrinter.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method prints summary for each event.</p>
+<p>This method has been overridden in children classes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.basePrinter.Printer">
+<em class="property">class </em><code class="descclassname">labelord.basePrinter.</code><code class="descname">Printer</code><a class="headerlink" href="#labelord.basePrinter.Printer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#labelord.basePrinter.BasePrinter" title="labelord.basePrinter.BasePrinter"><code class="xref py py-class docutils literal"><span class="pre">labelord.basePrinter.BasePrinter</span></code></a></p>
+<p>This class is the general printer.</p>
+<dl class="method">
+<dt id="labelord.basePrinter.Printer.event">
+<code class="descname">event</code><span class="sig-paren">(</span><em>event</em>, <em>result</em>, <em>repo</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.Printer.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.Printer.summary">
+<code class="descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.Printer.summary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.basePrinter.QuietPrinter">
+<em class="property">class </em><code class="descclassname">labelord.basePrinter.</code><code class="descname">QuietPrinter</code><a class="headerlink" href="#labelord.basePrinter.QuietPrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#labelord.basePrinter.BasePrinter" title="labelord.basePrinter.BasePrinter"><code class="xref py py-class docutils literal"><span class="pre">labelord.basePrinter.BasePrinter</span></code></a></p>
+<p>This printer is used when the application is in quiet/silent mode.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.basePrinter.VerbosePrinter">
+<em class="property">class </em><code class="descclassname">labelord.basePrinter.</code><code class="descname">VerbosePrinter</code><a class="headerlink" href="#labelord.basePrinter.VerbosePrinter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#labelord.basePrinter.BasePrinter" title="labelord.basePrinter.BasePrinter"><code class="xref py py-class docutils literal"><span class="pre">labelord.basePrinter.BasePrinter</span></code></a></p>
+<p>This printer is used when the application is in verbose mode.</p>
+<dl class="attribute">
+<dt id="labelord.basePrinter.VerbosePrinter.LINE_START">
+<code class="descname">LINE_START</code><em class="property"> = '[{}][{}] {}'</em><a class="headerlink" href="#labelord.basePrinter.VerbosePrinter.LINE_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.VerbosePrinter.event">
+<code class="descname">event</code><span class="sig-paren">(</span><em>event</em>, <em>result</em>, <em>repo</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.VerbosePrinter.event" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.basePrinter.VerbosePrinter.summary">
+<code class="descname">summary</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.basePrinter.VerbosePrinter.summary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-labelord.cli">
+<span id="labelord-cli-module"></span><h2>labelord.cli module<a class="headerlink" href="#module-labelord.cli" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="labelord.cli.main">
+<code class="descclassname">labelord.cli.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.cli.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main function.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-labelord.communicator">
+<span id="labelord-communicator-module"></span><h2>labelord.communicator module<a class="headerlink" href="#module-labelord.communicator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="labelord.communicator.GitHub">
+<em class="property">class </em><code class="descclassname">labelord.communicator.</code><code class="descname">GitHub</code><span class="sig-paren">(</span><em>token</em>, <em>session=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>This class is for connection with GitHub.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>token (str): The token to be used for authorization with GitHub.
+session (Session): A Requests session to be used to send and receive data from GitHub API.</dd>
+</dl>
+<dl class="attribute">
+<dt id="labelord.communicator.GitHub.GH_API_ENDPOINT">
+<code class="descname">GH_API_ENDPOINT</code><em class="property"> = 'https://api.github.com'</em><a class="headerlink" href="#labelord.communicator.GitHub.GH_API_ENDPOINT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.create_label">
+<code class="descname">create_label</code><span class="sig-paren">(</span><em>repository</em>, <em>name</em>, <em>color</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.create_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new label in given repository.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>repository (str): Name of repository.
+name (str): Name of label.
+color (str): Color of new label.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.delete_label">
+<code class="descname">delete_label</code><span class="sig-paren">(</span><em>repository</em>, <em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.delete_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete existing label in given repository.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>repository (str): Name of repository.
+name (str): Name of label to be deleted.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.list_labels">
+<code class="descname">list_labels</code><span class="sig-paren">(</span><em>repository</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.list_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dict of labels with colors for given repository slug</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>dictionary where key and value is str: A mapping of color to each label in the given repository.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.list_repositories">
+<code class="descname">list_repositories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.list_repositories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of names of accessible repositories (including owner)</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list of str: The full names of each repository.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.set_session">
+<code class="descname">set_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.set_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the session and authorizes it for communicate with GitHub API.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>session (Session): A Requests session.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="labelord.communicator.GitHub.update_label">
+<code class="descname">update_label</code><span class="sig-paren">(</span><em>repository</em>, <em>name</em>, <em>color</em>, <em>old_name=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.update_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update existing label in given repository.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>repository (str): Name of repository.
+name (str): Name of new label.
+color (str): Color of new label.
+old_name (str): Name of old label.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="labelord.communicator.GitHub.webhook_verify_signature">
+<em class="property">static </em><code class="descname">webhook_verify_signature</code><span class="sig-paren">(</span><em>data</em>, <em>signature</em>, <em>secret</em>, <em>encoding='utf-8'</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHub.webhook_verify_signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies the signature from webhook if is correct.</p>
+<p>More details on <a class="reference external" href="https://developer.github.com/webhooks/securing/">https://developer.github.com/webhooks/securing/</a>.</p>
+<p>Args:</p>
+<blockquote>
+<div>data (str): Data for verification.
+signature (str): Signature.
+secret (str): Application’s GitHub API secret.
+encoding (str): Encoding of the secret.</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="labelord.communicator.GitHubError">
+<em class="property">exception </em><code class="descclassname">labelord.communicator.</code><code class="descname">GitHubError</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.communicator.GitHubError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<p>This exception is thrown when is error with the GitHub connection.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>status_code (int): The status code from the response.
+message (str): Error message from the response.</dd>
+</dl>
+<dl class="attribute">
+<dt id="labelord.communicator.GitHubError.code_message">
+<code class="descname">code_message</code><a class="headerlink" href="#labelord.communicator.GitHubError.code_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-labelord.helper">
+<span id="labelord-helper-module"></span><h2>labelord.helper module<a class="headerlink" href="#module-labelord.helper" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="labelord.helper.create_config">
+<code class="descclassname">labelord.helper.</code><code class="descname">create_config</code><span class="sig-paren">(</span><em>config_filename=None</em>, <em>token=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.create_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for load a config file from the local storage.</p>
+<p>If config no exists, creates a new configuration.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>config_filename (str): Path config file.
+token (str): A GitHub token.</dd>
+<dt>Returns:</dt>
+<dd>ConfigParser: Configuration from config file.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.extract_labels">
+<code class="descclassname">labelord.helper.</code><code class="descname">extract_labels</code><span class="sig-paren">(</span><em>gh</em>, <em>template_opt</em>, <em>cfg</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.extract_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for extracting labels from the config file or the template repository.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>gh (GitHub): A GitHub object.
+template_opt (str): A template repository.
+cfg: (ConfigParser): Current configuration.</dd>
+<dt>Returns:</dt>
+<dd>dictionary where key and value is str: A mapping of color to each label in the given repository.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.extract_repos">
+<code class="descclassname">labelord.helper.</code><code class="descname">extract_repos</code><span class="sig-paren">(</span><em>cfg</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.extract_repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for extracting repositories from the configuration.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>cfg: (ConfigParser): Current configuration.</dd>
+<dt>Returns:</dt>
+<dd>list ([str]): A list of repositories.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.get_labels_from_json">
+<code class="descclassname">labelord.helper.</code><code class="descname">get_labels_from_json</code><span class="sig-paren">(</span><em>labels</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.get_labels_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for parsed labels from the json data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.get_repos_from_json">
+<code class="descclassname">labelord.helper.</code><code class="descname">get_repos_from_json</code><span class="sig-paren">(</span><em>repos</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.get_repos_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for parsed repos from the json data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.gh_error_return">
+<code class="descclassname">labelord.helper.</code><code class="descname">gh_error_return</code><span class="sig-paren">(</span><em>github_error</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.gh_error_return" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a GitHub request status code.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>github_error (GitHubError): an exception object representing the error</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.pick_printer">
+<code class="descclassname">labelord.helper.</code><code class="descname">pick_printer</code><span class="sig-paren">(</span><em>verbose</em>, <em>quiet</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.pick_printer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick the correct printer, based on verbosity.
+Returns:</p>
+<blockquote>
+<div>BasePrinter: VerbosePrinter or QuietPrinter or Printer.</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.pick_runner">
+<code class="descclassname">labelord.helper.</code><code class="descname">pick_runner</code><span class="sig-paren">(</span><em>dry_run</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.pick_runner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick the correct runner.</p>
+<p>If dry_run is picked, the program won’t do any changes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.helper.retrieve_github_client">
+<code class="descclassname">labelord.helper.</code><code class="descname">retrieve_github_client</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.helper.retrieve_github_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the GitHub object.</p>
+<p>If GitHub not exists, function exits the program.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>ctx: click context.</dd>
+<dt>Returns:</dt>
+<dd>GitHub: The GitHub object.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-labelord.runModes">
+<span id="labelord-runmodes-module"></span><h2>labelord.runModes module<a class="headerlink" href="#module-labelord.runModes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="labelord.runModes.DryRunProcessor">
+<em class="property">class </em><code class="descclassname">labelord.runModes.</code><code class="descname">DryRunProcessor</code><span class="sig-paren">(</span><em>github</em>, <em>printer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.runModes.DryRunProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#labelord.runModes.RunProcessor" title="labelord.runModes.RunProcessor"><code class="xref py py-class docutils literal"><span class="pre">labelord.runModes.RunProcessor</span></code></a></p>
+<p>This run processor is child class from RunProcessor, but does not make any changes.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.runModes.RunModes">
+<em class="property">class </em><code class="descclassname">labelord.runModes.</code><code class="descname">RunModes</code><a class="headerlink" href="#labelord.runModes.RunModes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>This class is to declare various modes the program.</p>
+<dl class="classmethod">
+<dt id="labelord.runModes.RunModes.replace_mode">
+<em class="property">classmethod </em><code class="descname">replace_mode</code><span class="sig-paren">(</span><em>labels</em>, <em>labels_specs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.runModes.RunModes.replace_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for update mode.</p>
+<p>This method do same as update_mode, but also do delete action.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>tuple of dictionary: A tuple of the resulting action dictionaries.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="labelord.runModes.RunModes.update_mode">
+<em class="property">classmethod </em><code class="descname">update_mode</code><span class="sig-paren">(</span><em>labels</em>, <em>labels_specs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.runModes.RunModes.update_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for update mode.</p>
+<p>For each label compare if is in repo, if not create or update.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>tuple of dictionary: A tuple of the resulting action dictionaries.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.runModes.RunProcessor">
+<em class="property">class </em><code class="descclassname">labelord.runModes.</code><code class="descname">RunProcessor</code><span class="sig-paren">(</span><em>github</em>, <em>printer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.runModes.RunProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>This class is main class for logic.
+Attributes:</p>
+<blockquote>
+<div>github (GitHub): GitHub instance.
+printer (BasePrinter): A printer responsible for printing result.</div></blockquote>
+<dl class="attribute">
+<dt id="labelord.runModes.RunProcessor.MODES">
+<code class="descname">MODES</code><em class="property"> = {'update': &lt;bound method RunModes.update_mode of &lt;class 'labelord.runModes.RunModes'&gt;&gt;, 'replace': &lt;bound method RunModes.replace_mode of &lt;class 'labelord.runModes.RunModes'&gt;&gt;}</em><a class="headerlink" href="#labelord.runModes.RunProcessor.MODES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.runModes.RunProcessor.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>slugs</em>, <em>labels_specs</em>, <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.runModes.RunProcessor.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each repository run changes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-labelord.web">
+<span id="labelord-web-module"></span><h2>labelord.web module<a class="headerlink" href="#module-labelord.web" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="labelord.web.LabelordChange">
+<em class="property">class </em><code class="descclassname">labelord.web.</code><code class="descname">LabelordChange</code><span class="sig-paren">(</span><em>action</em>, <em>name</em>, <em>color</em>, <em>new_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="labelord.web.LabelordChange.CHANGE_TIMEOUT">
+<code class="descname">CHANGE_TIMEOUT</code><em class="property"> = 10</em><a class="headerlink" href="#labelord.web.LabelordChange.CHANGE_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordChange.is_valid">
+<code class="descname">is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordChange.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.web.LabelordChange.tuple">
+<code class="descname">tuple</code><a class="headerlink" href="#labelord.web.LabelordChange.tuple" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="labelord.web.LabelordWeb">
+<em class="property">class </em><code class="descclassname">labelord.web.</code><code class="descname">LabelordWeb</code><span class="sig-paren">(</span><em>labelord_config</em>, <em>github</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">flask.app.Flask</span></code></p>
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.cleanup_ignores">
+<code class="descname">cleanup_ignores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.cleanup_ignores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="labelord.web.LabelordWeb.create_app">
+<em class="property">static </em><code class="descname">create_app</code><span class="sig-paren">(</span><em>config=None</em>, <em>github=None</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.create_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.finish_setup">
+<code class="descname">finish_setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.finish_setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.inject_session">
+<code class="descname">inject_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.inject_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.process_label_webhook">
+<code class="descname">process_label_webhook</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.process_label_webhook" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.process_label_webhook_create">
+<code class="descname">process_label_webhook_create</code><span class="sig-paren">(</span><em>label</em>, <em>repo</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.process_label_webhook_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.process_label_webhook_delete">
+<code class="descname">process_label_webhook_delete</code><span class="sig-paren">(</span><em>label</em>, <em>repo</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.process_label_webhook_delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.process_label_webhook_edit">
+<code class="descname">process_label_webhook_edit</code><span class="sig-paren">(</span><em>label</em>, <em>repo</em>, <em>changes</em><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.process_label_webhook_edit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="labelord.web.LabelordWeb.reload_config">
+<code class="descname">reload_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.LabelordWeb.reload_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="labelord.web.LabelordWeb.repos">
+<code class="descname">repos</code><a class="headerlink" href="#labelord.web.LabelordWeb.repos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="labelord.web.finalize_setup">
+<code class="descclassname">labelord.web.</code><code class="descname">finalize_setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.finalize_setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="labelord.web.hook_accept">
+<code class="descclassname">labelord.web.</code><code class="descname">hook_accept</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.hook_accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="labelord.web.index">
+<code class="descclassname">labelord.web.</code><code class="descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#labelord.web.index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-labelord">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-labelord" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorial.html" title="previous chapter">Configuration</a></li>
+      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Tomas Krasnay.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/labelord.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Configuration &#8212; labelord 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>To initialize the configuration of labelord properly, you first need to initialize your personal access GitHub token and webhook secret (only required when using the web application).</p>
+<div class="section" id="webhook">
+<h2>Webhook<a class="headerlink" href="#webhook" title="Permalink to this headline">¶</a></h2>
+<p>Webhooks allow you to build or set up GitHub Apps which subscribe to certain events on GitHub.com. When one of those events is triggered, we’ll send a HTTP POST payload to the webhook’s configured URL. Webhooks can be used to update an external issue tracker, trigger CI builds, update a backup mirror, or even deploy to your production server. You’re only limited by your imagination.</p>
+<blockquote>
+<div><ul class="simple">
+<li>head over to the <strong>Settings</strong> page of your repository and click on <strong>Webhooks &amp; services</strong>,</li>
+<li>click on <strong>Add webhook</strong>,</li>
+<li>fill the <strong>Payload URL</strong> (the server endpoint that will receive the webhook payload),</li>
+<li>select <strong>Content type</strong> (we will be working with Application/json),</li>
+<li>specify your <strong>Webhook secret</strong> (you will need to use this one in the configuration file),</li>
+<li>choose <strong>Let me select individual events</strong> and <strong>Label</strong> option,</li>
+<li>when you’re finished, click on <strong>Add webhook</strong>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="github-token">
+<h2>GitHub token<a class="headerlink" href="#github-token" title="Permalink to this headline">¶</a></h2>
+<p><strong>GitHub personal access token</strong> is a unique string, which user can generate in order to authenticate himself during the communication with GitHub API. For <strong>labelord</strong> to work properly, the GitHub token is required. You can generate your own following these steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li>navigate to your <strong>GitHub</strong> profile and choose <strong>Settings</strong>,</li>
+<li>in the left sidebar, click <strong>Developer settings</strong>,</li>
+<li>in the left sidebar, click <strong>Personal access tokens</strong>,</li>
+<li>click <strong>Generate new token</strong> (give your token a descriptive name),</li>
+<li>select the scopes, or permissions, you’d like to grant this token (if you want <strong>labelord</strong> to be able to manage also your private repositories, you need to choose <strong>“Full control of private repositories</strong> permission),</li>
+<li>when you’re finished, click on <strong>Generate token</strong>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="configuration-file">
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The configuration file with sufix “.cfg”, which is used to specify the repositories and labels, has to be located in the labelord directory. In this application is path to cofiguration file “./config.cfg”</p>
+<p>You have two option like define the configuration file:</p>
+<blockquote>
+<div><ul class="simple">
+<li>using the <code class="docutils literal"><span class="pre">-c/--config</span></code> option when running from CLI</li>
+<li>specifying the <code class="docutils literal"><span class="pre">LABELORD_CONFIG</span></code> environment variable when running as a web application</li>
+</ul>
+</div></blockquote>
+<p>Configuration files has to contain these fields:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">[github]</span></code></dt>
+<dd><ul class="first simple">
+<li><code class="docutils literal"><span class="pre">token</span></code>: your GitHub personal access token.</li>
+<li><code class="docutils literal"><span class="pre">webhook_secret</span></code>: your webhook secret key to validate all the incoming GitHub webhooks (only required if using the web application).</li>
+</ul>
+<div class="last admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>Don’t forget to keep your token and webhook secret safe and never publish them!</strong></p>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">[repos]</span></code></dt>
+<dd><ul class="first last simple">
+<li>here, you can specify all of the repositories you want to manage, in the form of GITHUB_USERNAME/REPOSITORY_NAME = on/off.</li>
+<li>the on/off option specifies if you want to perfom changes in the specified repository or not (can be altered by 1/0).</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">[labels]</span></code></dt>
+<dd><ul class="first last simple">
+<li>here, you can specify all of the labels you want to create / edit, in the form of LABEL_NAME = LABEL_COLOR. The label color is specified in the hexadecimal RGB format. One label per line!</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal"><span class="pre">[others]</span></code></dt>
+<dd><ul class="first last simple">
+<li>here, you can specify the “template” repository, which labels will be used as a source of labels instead of the labels specified in [labels] section.</li>
+<li>form: TEMPLATE_REPO = GITHUB_USERNAME/REPOSITORY_NAME</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="example-configuration-file">
+<h2>Example configuration file<a class="headerlink" href="#example-configuration-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">github</span><span class="p">]</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">YOUR_TOKEN</span>
+<span class="n">webhook_secret</span> <span class="o">=</span> <span class="n">YOUR_WEBHOOK</span>
+
+<span class="p">[</span><span class="n">labels</span><span class="p">]</span>
+<span class="n">hotFix</span> <span class="o">=</span> <span class="n">FA1111</span>
+<span class="n">Enhancement</span> <span class="o">=</span> <span class="n">FA1111</span>
+
+<span class="p">[</span><span class="n">repos</span><span class="p">]</span>
+<span class="n">tomikeKrasnay</span><span class="o">/</span><span class="n">example_project</span> <span class="o">=</span> <span class="n">on</span>
+<span class="n">tomikeKrasnay</span><span class="o">/</span><span class="n">example_project_2</span> <span class="o">=</span> <span class="n">off</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="usage.html" title="next chapter">Usage</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Tomas Krasnay.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/tutorial.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,124 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Usage &#8212; labelord 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>Now that you are all set up, you’re ready to use <strong>labelord</strong>! Here’s the list of all command line interface commands you can use. All of the commands can be used this way:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">labelord</span> <span class="p">[</span><span class="n">COMMAND</span><span class="p">]</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="p">[</span><span class="n">ARGUMENTS</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you wish to list all of the available options and commands in your command line interface, just type</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">labelord</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">labelord</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>REPOSLUG</strong> argument is name of the repository, from which you wish to list the labels.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can choose from two <strong>MODE</strong> arguments: UPDATE or REPLACE (depends on action you want to perform).</p>
+</div>
+<p>Run also provides an output to your command line interface, in form of summary with number of repositories updated. In <strong>verbose</strong> mode, every single action is printed, in <strong>quite</strong> mode nothing is printed at all. <strong>Verbose</strong> mode output comes with a few tags:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>[ADD]</strong>: label was added,</li>
+<li><strong>[UPD]</strong>: label was updated,</li>
+<li><strong>[DEL]</strong>: label was deleted,</li>
+<li><strong>[DRY]</strong>: action was performed in dry mode,</li>
+<li><strong>[LBL]</strong>: comes together with [ERR], when there’s error reading label,</li>
+<li><strong>[SUC]</strong>: action went successfully,</li>
+<li><strong>[ERR]</strong>: an error occurred while perfoming the action.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If no options are given, the server will run on localhost with port 5000. If you wish to deploy your application to server, you can use for example <a class="reference external" href="https://www.pythonanywhere.com/">PythonAnywhere</a>.</p>
+</div>
+<p>If you wish, you can proceed to the <a class="reference external" href="examples.html#section">Examples</a> or the full <a class="reference external" href="labelord.html#section">API documentation</a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Tomas Krasnay.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

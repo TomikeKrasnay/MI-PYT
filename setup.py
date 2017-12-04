@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 
 
-with open('README') as f:
+with open('README.rst') as f:
     long_description = ''.join(f.readlines())
 
 
 setup(
     name='labelord_tomikeKrasnay',
-    version='0.3.0',
+    version='0.5.0',
     description='Global multi-project management of GitHub labels',
     long_description=long_description,
     author='Marek Suchánek',
